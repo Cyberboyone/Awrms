@@ -1,6 +1,6 @@
 {
-  "buildCommand": "pnpm --filter @workspace/awrms run build && rm -rf public && mkdir -p public && cp -R artifacts/awrms/dist/public/. public/",
-  "outputDirectory": "public",
+  "buildCommand": "pnpm --filter @workspace/awrms run build",
+  "outputDirectory": "dist/public",
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": "vite",
   "rewrites": [
