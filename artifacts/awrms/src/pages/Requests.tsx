@@ -1,5 +1,4 @@
 import { SidebarLayout } from '../components/SidebarLayout';
-import { useGetWasteRequests } from '@workspace/api-client-react';
 import { 
   ClipboardList, 
   CheckCircle, 
@@ -27,8 +26,6 @@ import { Badge } from '../components/ui/badge';
 import { format } from 'date-fns';
 
 export default function Requests() {
-  const { data: requests } = useGetWasteRequests();
-
   const stats = [
     { title: 'Total Requests', value: '128', icon: ClipboardList, color: 'text-blue-600', bg: 'bg-blue-100' },
     { title: 'Completed', value: '98', icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-100' },
@@ -38,7 +35,7 @@ export default function Requests() {
   ];
 
   // Mock data if API is empty
-  const tableData = requests?.length ? requests : [
+  const tableData = [
     { id: 1042, location: 'Science Block', category: 'plastic', preferred_date: new Date().toISOString(), status: 'pending', assigned_to: null },
     { id: 1041, location: 'Main Library', category: 'paper', preferred_date: new Date(Date.now() - 86400).toISOString(), status: 'completed', assigned_to: 'John Personnel' },
     { id: 1040, location: 'Hostel A', category: 'metal', preferred_date: new Date(Date.now() + 172800).toISOString(), status: 'assigned', assigned_to: 'Sarah Worker' },

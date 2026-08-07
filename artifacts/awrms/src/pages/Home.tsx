@@ -1,15 +1,12 @@
 import { Link } from 'wouter';
 import { TopNavLayout } from '../components/TopNavLayout';
 import { Truck, Recycle, BarChart, Bell, Users } from 'lucide-react';
-import { useGetReportsSummary } from '@workspace/api-client-react';
 
 export default function Home() {
-  const { data: summary } = useGetReportsSummary();
-
   const statCards = [
     {
       title: 'Registered Users',
-      value: summary?.total_users ?? 256,
+      value: 256,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
@@ -20,7 +17,7 @@ export default function Home() {
     },
     {
       title: 'Collection Requests',
-      value: summary?.collection_requests ?? 128,
+      value: 128,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -32,7 +29,7 @@ export default function Home() {
     },
     {
       title: 'Completed Collections',
-      value: summary?.completed_collections ?? 98,
+      value: 98,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
           <rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
@@ -43,7 +40,7 @@ export default function Home() {
     },
     {
       title: 'Recycled Materials',
-      value: `${summary?.recycled_kg ?? '1,245'} kg`,
+      value: '1,245 kg',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
           <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
@@ -57,7 +54,7 @@ export default function Home() {
     },
     {
       title: 'Pending Requests',
-      value: summary?.pending_requests ?? 30,
+      value: 30,
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
           <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>

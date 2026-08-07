@@ -1,5 +1,19 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, AuthResponse } from '@workspace/api-client-react';
+
+export type UserRole = 'student' | 'staff' | 'personnel' | 'admin';
+
+export interface User {
+  id: number;
+  full_name: string;
+  username: string;
+  email: string;
+  role: UserRole;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
 
 interface AuthContextType {
   user: User | null;

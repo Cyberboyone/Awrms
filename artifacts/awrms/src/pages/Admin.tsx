@@ -1,5 +1,4 @@
 import { SidebarLayout } from '../components/SidebarLayout';
-import { useGetReportsSummary, useGetWasteRequests } from '@workspace/api-client-react';
 import { LayoutDashboard, UserPlus, PlusCircle, CalendarDays, FileText, Bell } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -9,9 +8,6 @@ import { format } from 'date-fns';
 import { Link } from 'wouter';
 
 export default function AdminDashboard() {
-  const { data: summary } = useGetReportsSummary();
-  const { data: requests } = useGetWasteRequests();
-
   const areaData = [
     { name: 'May 1', value: 22 },
     { name: 'May 6', value: 35 },
@@ -30,7 +26,7 @@ export default function AdminDashboard() {
   const stats = [
     {
       title: 'Total Users',
-      value: summary?.total_users ?? 256,
+      value: 256,
       change: '+8% from last month',
       up: true,
       icon: (
@@ -43,7 +39,7 @@ export default function AdminDashboard() {
     },
     {
       title: 'Collection Requests',
-      value: summary?.collection_requests ?? 128,
+      value: 128,
       change: '+15% from last month',
       up: true,
       icon: (
@@ -57,7 +53,7 @@ export default function AdminDashboard() {
     },
     {
       title: 'Completed Collections',
-      value: summary?.completed_collections ?? 98,
+      value: 98,
       change: '+12% from last month',
       up: true,
       icon: (
@@ -71,7 +67,7 @@ export default function AdminDashboard() {
     },
     {
       title: 'Recycled Materials',
-      value: `${summary?.recycled_kg ?? '1,245'} kg`,
+      value: '1,245 kg',
       change: '+18% from last month',
       up: true,
       icon: (
@@ -87,7 +83,7 @@ export default function AdminDashboard() {
     },
     {
       title: 'Pending Requests',
-      value: summary?.pending_requests ?? 30,
+      value: 30,
       change: '-5% from last month',
       up: false,
       icon: (
@@ -99,9 +95,7 @@ export default function AdminDashboard() {
     },
   ];
 
-  const recentRequests = (requests?.slice(0, 5) ?? []).length > 0
-    ? requests!.slice(0, 5)
-    : [
+  const recentRequests = [
         { id: 128, location: 'New Hostel, Block A', created_at: '2026-05-20T10:30:00Z', status: 'pending' },
         { id: 127, location: 'Science Faculty', created_at: '2026-05-20T09:15:00Z', status: 'pending' },
         { id: 126, location: 'Student Center', created_at: '2026-05-19T16:45:00Z', status: 'completed' },

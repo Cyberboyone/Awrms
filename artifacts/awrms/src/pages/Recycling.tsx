@@ -1,5 +1,4 @@
 import { SidebarLayout } from '../components/SidebarLayout';
-import { useGetRecyclingRecords } from '@workspace/api-client-react';
 import { 
   Recycle, 
   CheckCircle, 
@@ -26,8 +25,6 @@ import { Badge } from '../components/ui/badge';
 import { format } from 'date-fns';
 
 export default function Recycling() {
-  const { data: records } = useGetRecyclingRecords();
-
   const stats = [
     { title: 'Total Processed', value: '4,500kg', icon: PackageCheck, color: 'text-blue-600', bg: 'bg-blue-100' },
     { title: 'Fully Recycled', value: '3,800kg', icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-100' },
@@ -36,7 +33,7 @@ export default function Recycling() {
   ];
 
   // Mock data if API is empty
-  const tableData = records?.length ? records : [
+  const tableData = [
     { id: 2042, material_type: 'plastic', quantity_kg: 145, collection_date: new Date().toISOString(), status: 'recycled', location: 'Processing Center A' },
     { id: 2041, material_type: 'paper', quantity_kg: 320, collection_date: new Date(Date.now() - 86400).toISOString(), status: 'processing', location: 'Processing Center B' },
     { id: 2040, material_type: 'metal', quantity_kg: 218, collection_date: new Date(Date.now() - 172800).toISOString(), status: 'sorted', location: 'Sorting Facility' },

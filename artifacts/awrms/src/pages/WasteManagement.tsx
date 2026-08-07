@@ -1,10 +1,8 @@
 import { SidebarLayout } from '../components/SidebarLayout';
-import { useGetWasteItems } from '@workspace/api-client-react';
 import { Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 export default function WasteManagement() {
-  const { data: wasteItems } = useGetWasteItems();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -89,16 +87,7 @@ export default function WasteManagement() {
     { id: 5, code: 'WST-2026-005', waste_type: 'organic', category: 'non_recyclable', quantity_kg: 150, source_location: 'Old Hostel, Block C', collection_date: '2026-05-18', status: 'pending' },
   ];
 
-  const rawData = wasteItems?.length ? wasteItems.map((item, i) => ({
-    id: item.id,
-    code: `WST-2026-${String(item.id).padStart(3, '0')}`,
-    waste_type: item.waste_type,
-    category: item.category,
-    quantity_kg: item.quantity_kg,
-    source_location: item.source_location,
-    collection_date: item.collection_date,
-    status: item.status,
-  })) : seedData;
+  const rawData = seedData;
 
   const filtered = rawData.filter(row => {
     const matchSearch = !search || row.source_location?.toLowerCase().includes(search.toLowerCase()) || row.waste_type?.toLowerCase().includes(search.toLowerCase());
@@ -124,7 +113,7 @@ export default function WasteManagement() {
     disposed: 'bg-slate-100 text-slate-600',
   };
 
-  const typeIcons: Record<string, JSX.Element> = {
+  const typeIcons: Record<string, ReactNode> = {
     plastic: <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#2D6A4F" strokeWidth="2"><path d="M12 2v20M2 12h20"/></svg>,
     paper: <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#3b82f6" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>,
     metal: <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#f59e0b" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,

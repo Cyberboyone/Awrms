@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '../context/AuthContext';
 import { TopNavLayout } from '../components/TopNavLayout';
-import { useRegister } from '@workspace/api-client-react';
 import { useToast } from '../hooks/use-toast';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -29,7 +28,6 @@ export default function Register() {
   const { login } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const registerMutation = useRegister();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -49,23 +47,18 @@ export default function Register() {
 
   function onSubmit(values: FormValues) {
     const { confirmPassword, terms, ...apiData } = values;
-    registerMutation.mutate(
-      { data: apiData as any },
-      {
-        onSuccess: (data) => {
-          login(data);
-          toast({ title: 'Registration successful', description: 'Your account has been created.' });
-          setLocation('/home');
-        },
-        onError: (error: any) => {
-          toast({
-            title: 'Registration failed',
-            description: error?.response?.data?.error || 'An error occurred',
-            variant: 'destructive',
-          });
-        },
-      }
-    );
+    login({
+      user: {
+        id: Date.now(),
+        full_name: apiData.full_name,
+        username: apiData.username,
+        email: apiData.email,
+        role: apiData.role,
+      },
+      token: 'local-session',
+    });
+    toast({ title: 'Registration successful', description: 'Your account has been created.' });
+    setLocation('/home');
   }
 
   const termsValue = watch('terms');
@@ -253,14 +246,13 @@ export default function Register() {
 
               <button
                 type="submit"
-                disabled={registerMutation.isPending}
                 className="w-full flex items-center justify-center gap-2 bg-[#1B4332] hover:bg-[#153427] text-white font-semibold py-3 rounded-md transition-colors disabled:opacity-60"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
                   <line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>
                 </svg>
-                {registerMutation.isPending ? 'Registering...' : 'Register Account'}
+                Register Account
               </button>
 
               <div className="text-center pt-2">

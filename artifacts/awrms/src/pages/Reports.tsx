@@ -1,5 +1,4 @@
 import { SidebarLayout } from '../components/SidebarLayout';
-import { useGetReportsSummary } from '@workspace/api-client-react';
 import { BarChart3 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -10,8 +9,6 @@ import {
 import { Link } from 'wouter';
 
 export default function Reports() {
-  const { data: summary } = useGetReportsSummary();
-
   const stats = [
     {
       title: 'Total Waste Collected',
@@ -44,7 +41,7 @@ export default function Reports() {
     },
     {
       title: 'Completed Collections',
-      value: summary?.completed_collections ?? 98,
+      value: 98,
       change: '+12% from last period',
       up: true,
       icon: (
@@ -58,7 +55,7 @@ export default function Reports() {
     },
     {
       title: 'Pending Requests',
-      value: summary?.pending_requests ?? 30,
+      value: 30,
       change: '-5% from last period',
       up: false,
       icon: (
@@ -70,7 +67,7 @@ export default function Reports() {
     },
     {
       title: 'Total Users',
-      value: summary?.total_users ?? 256,
+      value: 256,
       change: '+8% from last period',
       up: true,
       icon: (

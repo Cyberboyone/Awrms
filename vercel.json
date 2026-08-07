@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm --filter @workspace/awrms run build",
+  "outputDirectory": "artifacts/awrms/dist/public",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "framework": "vite"
+}
