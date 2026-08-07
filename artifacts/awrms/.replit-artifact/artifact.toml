@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "AWRMS"
+description = "Automated Waste Recycling Management System for Sa'adu Zungur University. A full-stack web application for managing waste collection requests, recycling records, user accounts with role-based access control (student, staff, personnel, admin), and administrative reporting with charts."
+version = "1.0.0"
+id = "artifacts/awrms"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20421
+
+[services.development]
+run = "pnpm --filter @workspace/awrms run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/awrms", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/awrms/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20421"
+BASE_PATH = "/"
