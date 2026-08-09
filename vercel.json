@@ -1,5 +1,5 @@
 {
-  "buildCommand": "ROOT=\"$(git rev-parse --show-toplevel 2>/dev/null || echo .)\" && pnpm --filter @workspace/awrms run build && APP=\"$(pnpm --filter @workspace/awrms exec pwd)\" && rm -rf \"$ROOT/public\" \"$APP/public\" && mkdir -p \"$ROOT/public\" && cp -R \"$APP/dist/public/.\" \"$ROOT/public/\" && if [ \"$ROOT\" != \"$APP\" ]; then mkdir -p \"$APP/public\" && cp -R \"$APP/dist/public/.\" \"$APP/public/\"; fi",
+  "buildCommand": "ROOT=\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\" && cd \"$ROOT\" && pnpm --filter @workspace/awrms run build && rm -rf \"$ROOT/public\" && mkdir -p \"$ROOT/public\" && cp -R \"$ROOT/artifacts/awrms/dist/public/.\" \"$ROOT/public/\" && mkdir -p \"$ROOT/artifacts/awrms/public\" && cp -R \"$ROOT/artifacts/awrms/dist/public/.\" \"$ROOT/artifacts/awrms/public/\"",
   "outputDirectory": "public",
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": "vite",
