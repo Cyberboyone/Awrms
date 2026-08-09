@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$ROOT"
+
+pnpm --filter @workspace/awrms run build
+
+rm -rf "$ROOT/public"
+mkdir -p "$ROOT/public"
+cp -R "$ROOT/artifacts/awrms/dist/public/." "$ROOT/public/"
+
+mkdir -p "$ROOT/artifacts/awrms/public"
+cp -R "$ROOT/artifacts/awrms/dist/public/." "$ROOT/artifacts/awrms/public/"
