@@ -1,8 +1,6 @@
 {
-  "buildCommand": "sh scripts/build-vercel.sh",
+  "framework": "vite",
   "outputDirectory": "public",
-  "installCommand": "npx --yes pnpm@10 install",
-  "framework": "other",
   "rewrites": [
     {
       "source": "/(.*)",
