@@ -12,7 +12,7 @@ cd "$ROOT"
 echo "== workspace root: $ROOT"
 echo "== cwd: $(pwd)"
 
-pnpm --filter @workspace/awrms run build
+npx --yes pnpm@10 --filter @workspace/awrms run build
 
 rm -rf "$ROOT/public"
 mkdir -p "$ROOT/public"
