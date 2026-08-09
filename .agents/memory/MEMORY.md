@@ -1,1 +1,0 @@
-- [Vercel monorepo deployments](vercel-monorepo-deployments.md) — keep workspace lockfiles, generated API dependencies, and external build defaults aligned.
