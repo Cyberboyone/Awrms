@@ -2,7 +2,7 @@
   "buildCommand": "sh \"$(git rev-parse --show-toplevel)/scripts/build-vercel.sh\"",
   "outputDirectory": "public",
   "installCommand": "pnpm install --frozen-lockfile",
-  "framework": "vite",
+  "framework": "other",
   "rewrites": [
     {
       "source": "/(.*)",
