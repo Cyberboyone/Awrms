@@ -1,5 +1,6 @@
 {
   "framework": "vite",
+  "installCommand": "npx --yes pnpm@10 install",
   "outputDirectory": "public",
   "rewrites": [
     {
