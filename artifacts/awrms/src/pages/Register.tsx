@@ -47,6 +47,18 @@ export default function Register() {
 
   function onSubmit(values: FormValues) {
     const { confirmPassword, terms, ...apiData } = values;
+    
+    // Store user in localStorage for login lookup
+    const users = JSON.parse(localStorage.getItem('awrms_users') || '[]');
+    users.push({
+      id: Date.now(),
+      full_name: apiData.full_name,
+      username: apiData.username,
+      email: apiData.email,
+      role: apiData.role,
+    });
+    localStorage.setItem('awrms_users', JSON.stringify(users));
+
     login({
       user: {
         id: Date.now(),

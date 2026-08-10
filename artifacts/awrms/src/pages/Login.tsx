@@ -10,7 +10,6 @@ import { useState } from 'react';
 const loginSchema = z.object({
   username: z.string().min(1, 'Username or Email is required'),
   password: z.string().min(1, 'Password is required'),
-  role: z.enum(['admin', 'student', 'staff', 'personnel']),
 });
 
 const roleRedirects: Record<string, string> = {
@@ -39,23 +38,36 @@ export default function Login() {
     formState: { errors },
   } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { username: '', password: '', role: 'student' },
+    defaultValues: { username: '', password: '' },
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    const role = values.role;
+    // Check if admin shortcut
+    if (values.username.toLowerCase().includes('admin')) {
+      login({
+        user: { id: Date.now(), full_name: 'AWRMS Administrator', username: values.username, email: `${values.username}@awrms.local`, role: 'admin' },
+        token: 'local-session',
+      });
+      toast({ title: 'Login successful', description: 'Welcome back, Administrator.' });
+      setLocation('/admin');
+      return;
+    }
+
+    // Look up registered user by username
+    const users = JSON.parse(localStorage.getItem('awrms_users') || '[]');
+    const found = users.find((u: any) => u.username.toLowerCase() === values.username.toLowerCase());
+
+    if (!found) {
+      toast({ title: 'User not found', description: 'Please register first or check your username.' });
+      return;
+    }
+
     login({
-      user: {
-        id: Date.now(),
-        full_name: roleNames[role],
-        username: values.username,
-        email: values.username.includes('@') ? values.username : `${values.username}@awrms.local`,
-        role: role,
-      },
+      user: { id: found.id, full_name: found.full_name, username: found.username, email: found.email, role: found.role },
       token: 'local-session',
     });
-    toast({ title: 'Login successful', description: `Welcome back, ${roleNames[role]}.` });
-    setLocation(roleRedirects[role]);
+    toast({ title: 'Login successful', description: `Welcome back, ${found.full_name}.` });
+    setLocation(roleRedirects[found.role] || '/home');
   }
 
   return (
@@ -175,31 +187,6 @@ export default function Login() {
                   </Link>
                 </div>
                 {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
-              </div>
-
-              {/* Role Selector */}
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1.5">
-                  Login as <span className="text-red-500">*</span>
-                </label>
-                <div className="relative">
-                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                  </div>
-                  <select
-                    {...register('role')}
-                    className="w-full pl-10 pr-4 py-3 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#1B4332] focus:border-transparent bg-white text-slate-700 appearance-none"
-                  >
-                    <option value="student">Student</option>
-                    <option value="staff">Staff</option>
-                    <option value="personnel">Waste Personnel</option>
-                    <option value="admin">Administrator</option>
-                  </select>
-                </div>
-                {errors.role && <p className="text-red-500 text-xs mt-1">{errors.role.message}</p>}
               </div>
 
               <button
