@@ -50,6 +50,11 @@ export default function Register() {
     
     // Store user in localStorage for login lookup
     const users = JSON.parse(localStorage.getItem('awrms_users') || '[]');
+    const exists = users.find((u: any) => u.username.toLowerCase() === apiData.username.toLowerCase());
+    if (exists) {
+      toast({ title: 'Username taken', description: 'This username is already registered. Please login instead.' });
+      return;
+    }
     users.push({
       id: Date.now(),
       full_name: apiData.full_name,
@@ -59,18 +64,8 @@ export default function Register() {
     });
     localStorage.setItem('awrms_users', JSON.stringify(users));
 
-    login({
-      user: {
-        id: Date.now(),
-        full_name: apiData.full_name,
-        username: apiData.username,
-        email: apiData.email,
-        role: apiData.role,
-      },
-      token: 'local-session',
-    });
-    toast({ title: 'Registration successful', description: 'Your account has been created.' });
-    setLocation('/home');
+    toast({ title: 'Registration successful', description: 'Your account has been created. Please login.' });
+    setLocation('/login');
   }
 
   const termsValue = watch('terms');
