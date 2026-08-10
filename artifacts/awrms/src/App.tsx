@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './components/ui/toaster';
 import { TooltipProvider } from './components/ui/tooltip';
-import { Route, Switch, Router as WouterRouter } from 'wouter';
+import { Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import React from 'react';
 
@@ -29,16 +29,18 @@ const queryClient = new QueryClient();
 // A simple PrivateRoute component
 function PrivateRoute({ component: Component, allowedRoles }: { component: React.ComponentType, allowedRoles?: string[] }) {
   const { user, isLoading } = useAuth();
+  const [, setLocation] = useLocation();
   
   if (isLoading) return <div className="flex h-screen w-full items-center justify-center">Loading...</div>;
   
   if (!user) {
-    window.location.href = '/login';
+    setLocation('/login');
     return null;
   }
   
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <NotFound />;
+    setLocation('/home');
+    return null;
   }
 
   return <Component />;
