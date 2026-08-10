@@ -3,6 +3,7 @@ import { Toaster } from './components/ui/toaster';
 import { TooltipProvider } from './components/ui/tooltip';
 import { Route, Switch, Router as WouterRouter, useLocation } from 'wouter';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { DataProvider } from './context/DataContext';
 import React from 'react';
 
 // Pages
@@ -23,6 +24,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Users from './pages/Users';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
+import Requests from './pages/Requests';
 
 const queryClient = new QueryClient();
 
@@ -72,7 +74,7 @@ function Router() {
         {() => <PrivateRoute component={WasteManagement} allowedRoles={['admin', 'personnel']} />}
       </Route>
       <Route path="/requests">
-        {() => <PrivateRoute component={WasteManagement} allowedRoles={['admin', 'personnel']} />}
+        {() => <PrivateRoute component={Requests} allowedRoles={['admin', 'personnel']} />}
       </Route>
       <Route path="/recycling">
         {() => <PrivateRoute component={WasteManagement} allowedRoles={['admin', 'personnel']} />}
@@ -103,10 +105,12 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-            <Router />
-          </WouterRouter>
-          <Toaster />
+          <DataProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+              <Router />
+            </WouterRouter>
+            <Toaster />
+          </DataProvider>
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>

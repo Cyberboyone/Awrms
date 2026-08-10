@@ -1,109 +1,55 @@
 import { SidebarLayout } from '../components/SidebarLayout';
-import { LayoutDashboard, UserPlus, PlusCircle, CalendarDays, FileText, Bell } from 'lucide-react';
+import { LayoutDashboard } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell
 } from 'recharts';
 import { format } from 'date-fns';
 import { Link } from 'wouter';
-import { useToast } from '../hooks/use-toast';
+import { useData } from '../context/DataContext';
 
 export default function AdminDashboard() {
-  const { toast } = useToast();
-  const areaData = [
-    { name: 'May 1', value: 22 },
-    { name: 'May 6', value: 35 },
-    { name: 'May 11', value: 28 },
-    { name: 'May 16', value: 55 },
-    { name: 'May 20', value: 75 },
-  ];
+  const { wasteEntries, requests, notifications } = useData();
 
-  const pieData = [
-    { name: 'Plastic', value: 420, pct: '33.7%', color: '#2D6A4F' },
-    { name: 'Paper', value: 320, pct: '25.7%', color: '#3b82f6' },
-    { name: 'Metal', value: 210, pct: '16.9%', color: '#f59e0b' },
-    { name: 'Glass', value: 295, pct: '23.7%', color: '#64748b' },
+  const totalWaste = wasteEntries.reduce((sum, e) => sum + e.quantity_kg, 0);
+  const recycledWaste = wasteEntries.filter(e => e.status === 'recycled' || e.status === 'processed').reduce((sum, e) => sum + e.quantity_kg, 0);
+  const pendingRequests = requests.filter(r => r.status === 'pending').length;
+  const completedRequests = requests.filter(r => r.status === 'completed').length;
+
+  const typeCounts: Record<string, number> = {};
+  wasteEntries.forEach(e => { typeCounts[e.waste_type] = (typeCounts[e.waste_type] || 0) + e.quantity_kg; });
+  const pieColors: Record<string, string> = { plastic: '#2D6A4F', paper: '#3b82f6', metal: '#f59e0b', glass: '#64748b', organic: '#f97316', other: '#94a3b8' };
+  const pieData = Object.entries(typeCounts).map(([name, value]) => ({ name, value, color: pieColors[name] || '#94a3b8' }));
+
+  const areaData = [
+    { name: 'Week 1', value: Math.floor(totalWaste * 0.2) },
+    { name: 'Week 2', value: Math.floor(totalWaste * 0.3) },
+    { name: 'Week 3', value: Math.floor(totalWaste * 0.25) },
+    { name: 'Week 4', value: Math.floor(totalWaste * 0.25) },
   ];
 
   const stats = [
-    {
-      title: 'Total Users',
-      value: 256,
-      change: '+8% from last month',
-      up: true,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-      ),
+    { title: 'Total Waste', value: `${totalWaste.toLocaleString()} kg`, change: `${wasteEntries.length} entries`, up: true,
+      icon: (<svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/></svg>),
       bg: 'bg-[#1B4332]',
     },
-    {
-      title: 'Collection Requests',
-      value: 128,
-      change: '+15% from last month',
-      up: true,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/>
-        </svg>
-      ),
+    { title: 'Collection Requests', value: requests.length.toString(), change: `${pendingRequests} pending`, up: true,
+      icon: (<svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>),
       bg: 'bg-[#1B4332]',
     },
-    {
-      title: 'Completed Collections',
-      value: 98,
-      change: '+12% from last month',
-      up: true,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
-          <rect x="1" y="3" width="15" height="13" rx="2"/>
-          <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-          <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-        </svg>
-      ),
+    { title: 'Completed', value: completedRequests.toString(), change: `${Math.round((completedRequests / Math.max(requests.length, 1)) * 100)}% rate`, up: true,
+      icon: (<svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>),
       bg: 'bg-[#1B4332]',
     },
-    {
-      title: 'Recycled Materials',
-      value: '1,245 kg',
-      change: '+18% from last month',
-      up: true,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
-          <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
-          <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
-          <path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/>
-          <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843"/>
-          <path d="m13.378 9.633-4.844-1.38L9.914 3.41"/>
-        </svg>
-      ),
+    { title: 'Recycled', value: `${recycledWaste.toLocaleString()} kg`, change: `${Math.round((recycledWaste / Math.max(totalWaste, 1)) * 100)}% rate`, up: true,
+      icon: (<svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/><path d="M8.293 13.596 7.196 9.5 3.1 10.598"/></svg>),
       bg: 'bg-[#1B4332]',
     },
-    {
-      title: 'Pending Requests',
-      value: 30,
-      change: '-5% from last month',
-      up: false,
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7">
-          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-        </svg>
-      ),
+    { title: 'Pending', value: pendingRequests.toString(), change: `${Math.round((pendingRequests / Math.max(requests.length, 1)) * 100)}% rate`, up: false,
+      icon: (<svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-7 w-7"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>),
       bg: 'bg-[#1B4332]',
     },
   ];
-
-  const recentRequests = [
-        { id: 128, location: 'New Hostel, Block A', created_at: '2026-05-20T10:30:00Z', status: 'pending' },
-        { id: 127, location: 'Science Faculty', created_at: '2026-05-20T09:15:00Z', status: 'pending' },
-        { id: 126, location: 'Student Center', created_at: '2026-05-19T16:45:00Z', status: 'completed' },
-        { id: 125, location: 'Library Complex', created_at: '2026-05-19T14:20:00Z', status: 'completed' },
-        { id: 124, location: 'Old Hostel, Block C', created_at: '2026-05-19T11:05:00Z', status: 'completed' },
-      ];
 
   const statusStyle: Record<string, string> = {
     pending: 'bg-orange-100 text-orange-700',
@@ -187,15 +133,15 @@ export default function AdminDashboard() {
             </div>
             <div className="flex justify-between mt-4 border-t border-slate-100 pt-4">
               <div className="text-center">
-                <p className="text-lg font-extrabold text-slate-800">128</p>
+                <p className="text-lg font-extrabold text-slate-800">{requests.length}</p>
                 <p className="text-xs text-slate-500">Total Requests</p>
               </div>
               <div className="text-center">
-                <p className="text-lg font-extrabold text-green-600">98</p>
+                <p className="text-lg font-extrabold text-green-600">{completedRequests}</p>
                 <p className="text-xs text-slate-500">Completed</p>
               </div>
               <div className="text-center">
-                <p className="text-lg font-extrabold text-orange-500">30</p>
+                <p className="text-lg font-extrabold text-orange-500">{pendingRequests}</p>
                 <p className="text-xs text-slate-500">Pending</p>
               </div>
             </div>
@@ -215,7 +161,7 @@ export default function AdminDashboard() {
                 </PieChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-2xl font-extrabold text-slate-800">1,245</span>
+                <span className="text-2xl font-extrabold text-slate-800">{totalWaste.toLocaleString()}</span>
                 <span className="text-xs text-slate-500 font-medium">kg Total</span>
               </div>
             </div>
@@ -224,18 +170,18 @@ export default function AdminDashboard() {
                 <div key={item.name} className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }}/>
-                    <span className="text-slate-700 font-medium">{item.name}</span>
+                    <span className="text-slate-700 font-medium capitalize">{item.name}</span>
                   </div>
-                  <span className="text-slate-500">{item.value} kg ({item.pct})</span>
+                  <span className="text-slate-500">{item.value} kg</span>
                 </div>
               ))}
             </div>
-            <button onClick={() => toast({ title: 'Full Report', description: 'Opening full analytics report...' })} className="mt-4 w-full border border-slate-200 text-slate-600 text-xs py-2 rounded-md hover:bg-slate-50 flex items-center justify-center gap-2">
+            <Link href="/reports" className="mt-4 w-full border border-slate-200 text-slate-600 text-xs py-2 rounded-md hover:bg-slate-50 flex items-center justify-center gap-2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
                 <line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>
               </svg>
               View Full Report
-            </button>
+            </Link>
           </div>
 
           {/* Recent Requests */}
@@ -245,8 +191,8 @@ export default function AdminDashboard() {
               <Link href="/requests" className="text-xs text-[#1B4332] hover:underline font-semibold">View All</Link>
             </div>
             <div className="flex-1 space-y-3 overflow-y-auto">
-              {recentRequests.map((req: any, idx: number) => (
-                <div key={req.id ?? idx} className="flex items-center justify-between pb-3 border-b border-slate-100 last:border-0 last:pb-0">
+              {requests.slice(0, 5).map((req) => (
+                <div key={req.id} className="flex items-center justify-between pb-3 border-b border-slate-100 last:border-0 last:pb-0">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="w-8 h-8 rounded-full bg-[#F0FFF4] flex items-center justify-center shrink-0">
                       <svg viewBox="0 0 24 24" fill="none" stroke="#2D6A4F" strokeWidth="2" className="h-4 w-4">
@@ -256,7 +202,7 @@ export default function AdminDashboard() {
                       </svg>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-slate-800">REQ-2026-00{req.id ?? (128 - idx)}</p>
+                      <p className="text-xs font-bold text-slate-800">REQ-{req.id}</p>
                       <p className="text-[11px] text-slate-500 truncate">{req.location}</p>
                       <p className="text-[10px] text-slate-400">
                         {req.created_at ? format(new Date(req.created_at), 'dd MMM yyyy, hh:mm a') : ''}
@@ -268,6 +214,7 @@ export default function AdminDashboard() {
                   </span>
                 </div>
               ))}
+              {requests.length === 0 && <p className="text-xs text-slate-400 text-center py-4">No requests yet</p>}
             </div>
           </div>
         </div>
@@ -277,19 +224,21 @@ export default function AdminDashboard() {
           {/* System Announcements */}
           <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
             <h3 className="font-bold text-slate-800 mb-4">System Announcements</h3>
-            <div className="flex items-start gap-3 p-3 bg-[#F0FFF4] rounded-lg border border-[#C6E5D0]">
-              <div className="w-10 h-10 rounded-full bg-[#1B4332] flex items-center justify-center shrink-0">
-                <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-5 w-5">
-                  <path d="M3 11l19-9-9 19-2-8-8-2z"/>
-                </svg>
+            {notifications.filter(n => n.type === 'info').slice(0, 3).map(n => (
+              <div key={n.id} className="flex items-start gap-3 p-3 bg-[#F0FFF4] rounded-lg border border-[#C6E5D0] mb-2 last:mb-0">
+                <div className="w-10 h-10 rounded-full bg-[#1B4332] flex items-center justify-center shrink-0">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="h-5 w-5">
+                    <path d="M3 11l19-9-9 19-2-8-8-2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-slate-700">{n.title}</p>
+                  <p className="text-xs text-slate-600 leading-relaxed mt-0.5">{n.message}</p>
+                  <p className="text-xs text-[#1B4332] font-semibold mt-1.5">{format(new Date(n.created_at), 'MMM dd, yyyy')}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm text-slate-700 leading-relaxed">
-                  Keep the campus clean and green. Ensure proper waste segregation and timely collection.
-                </p>
-                <p className="text-xs text-[#1B4332] font-semibold mt-1.5">Posted on May 18, 2026</p>
-              </div>
-            </div>
+            ))}
+            {notifications.filter(n => n.type === 'info').length === 0 && <p className="text-xs text-slate-400 text-center py-4">No announcements</p>}
           </div>
 
           {/* Quick Actions */}
