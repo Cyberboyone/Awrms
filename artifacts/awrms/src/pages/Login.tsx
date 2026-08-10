@@ -27,7 +27,7 @@ const roleNames: Record<string, string> = {
 };
 
 export default function Login() {
-  const { login, findUser } = useAuth();
+  const { login, findUser, registerUser } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -53,20 +53,21 @@ export default function Login() {
       return;
     }
 
-    // Look up registered user
+    // Look up registered user - if not found, create them automatically
     const found = findUser(values.username);
+    let user;
 
-    if (!found) {
-      toast({ title: 'User not found', description: 'Please register first or check your username.' });
-      return;
+    if (found) {
+      user = { id: found.id, full_name: found.full_name, username: found.username, email: found.email, role: found.role };
+    } else {
+      // Auto-create user for demo purposes
+      user = { id: Date.now(), full_name: values.username, username: values.username, email: `${values.username}@awrms.local`, role: 'student' as const };
+      registerUser({ full_name: values.username, username: values.username, email: `${values.username}@awrms.local`, role: 'student' });
     }
 
-    login({
-      user: { id: found.id, full_name: found.full_name, username: found.username, email: found.email, role: found.role },
-      token: 'local-session',
-    });
-    toast({ title: 'Login successful', description: `Welcome back, ${found.full_name}.` });
-    setLocation(roleRedirects[found.role] || '/home');
+    login({ user, token: 'local-session' });
+    toast({ title: 'Login successful', description: `Welcome, ${user.full_name}.` });
+    setLocation(roleRedirects[user.role] || '/home');
   }
 
   return (
