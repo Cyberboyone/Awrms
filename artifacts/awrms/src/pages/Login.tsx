@@ -42,13 +42,13 @@ export default function Login() {
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    // Admin shortcut
-    if (values.username.toLowerCase().includes('admin')) {
+    // Only muhammadmusab372@gmail.com is admin
+    if (values.username.toLowerCase() === 'muhammadmusab372' || values.username.toLowerCase() === 'muhammadmusab372@gmail.com') {
       login({
-        user: { id: Date.now(), full_name: 'AWRMS Administrator', username: values.username, email: `${values.username}@awrms.local`, role: 'admin' },
+        user: { id: Date.now(), full_name: 'Muhammad Musab', username: 'muhammadmusab372', email: 'muhammadmusab372@gmail.com', role: 'admin' },
         token: 'local-session',
       });
-      toast({ title: 'Login successful', description: 'Welcome back, Administrator.' });
+      toast({ title: 'Login successful', description: 'Welcome back, Muhammad Musab.' });
       setLocation('/admin');
       return;
     }
