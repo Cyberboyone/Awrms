@@ -43,18 +43,19 @@ export default function Login() {
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
+    const role = values.role;
     login({
       user: {
         id: Date.now(),
-        full_name: roleNames[values.role],
+        full_name: roleNames[role],
         username: values.username,
         email: values.username.includes('@') ? values.username : `${values.username}@awrms.local`,
-        role: values.role,
+        role: role,
       },
       token: 'local-session',
     });
-    toast({ title: 'Login successful', description: `Welcome back, ${roleNames[values.role]}.` });
-    setLocation(roleRedirects[values.role]);
+    toast({ title: 'Login successful', description: `Welcome back, ${roleNames[role]}.` });
+    setLocation(roleRedirects[role]);
   }
 
   return (
