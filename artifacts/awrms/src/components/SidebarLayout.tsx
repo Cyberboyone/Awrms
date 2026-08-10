@@ -52,16 +52,18 @@ export function SidebarLayout({ children, pageTitle, pageIcon: PageIcon }: Sideb
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { toast } = useToast();
 
-  const navItems = [
-    { title: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
-    { title: 'User Management', icon: Users, path: '/users', hasChevron: true },
-    { title: 'Waste Management', icon: Trash2, path: '/waste', hasChevron: true },
-    { title: 'Collection Requests', icon: ClipboardList, path: '/requests', badge: 12 },
-    { title: 'Recycling Management', icon: Recycle, path: '/recycling', hasChevron: true },
-    { title: 'Reports & Analytics', icon: BarChart3, path: '/reports' },
-    { title: 'Notifications', icon: Bell, path: '/notifications', badge: 5 },
-    { title: 'Settings', icon: Settings, path: '/settings' },
+  const allNavItems = [
+    { title: 'Dashboard', icon: LayoutDashboard, path: '/admin', roles: ['admin'] },
+    { title: 'User Management', icon: Users, path: '/users', hasChevron: true, roles: ['admin'] },
+    { title: 'Waste Management', icon: Trash2, path: '/waste', hasChevron: true, roles: ['admin', 'personnel'] },
+    { title: 'Collection Requests', icon: ClipboardList, path: '/requests', badge: 12, roles: ['admin', 'personnel'] },
+    { title: 'Recycling Management', icon: Recycle, path: '/recycling', hasChevron: true, roles: ['admin', 'personnel'] },
+    { title: 'Reports & Analytics', icon: BarChart3, path: '/reports', roles: ['admin'] },
+    { title: 'Notifications', icon: Bell, path: '/notifications', badge: 5, roles: ['admin', 'student', 'staff', 'personnel'] },
+    { title: 'Settings', icon: Settings, path: '/settings', roles: ['admin', 'student', 'staff', 'personnel'] },
   ];
+
+  const navItems = allNavItems.filter(item => item.roles.includes(user?.role || ''));
 
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
