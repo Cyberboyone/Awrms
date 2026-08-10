@@ -29,21 +29,24 @@ const queryClient = new QueryClient();
 // A simple PrivateRoute component
 function PrivateRoute({ component: Component, allowedRoles }: { component: React.ComponentType, allowedRoles?: string[] }) {
   const { user, isLoading } = useAuth();
-  const [, setLocation] = useLocation();
   
   if (isLoading) return <div className="flex h-screen w-full items-center justify-center">Loading...</div>;
   
   if (!user) {
-    setLocation('/login');
-    return null;
+    return <Redirect to="/login" />;
   }
   
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    setLocation('/home');
-    return null;
+    return <Redirect to="/home" />;
   }
 
   return <Component />;
+}
+
+function Redirect({ to }: { to: string }) {
+  const [, setLocation] = useLocation();
+  React.useEffect(() => { setLocation(to); }, [setLocation, to]);
+  return null;
 }
 
 function Router() {
