@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'wouter';
 import { useAuth } from '../context/AuthContext';
-import { Bell, ChevronDown } from 'lucide-react';
+import { Bell, ChevronDown, Menu, X } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,8 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-import { Avatar, AvatarFallback } from './ui/avatar';
-import React from 'react';
+import React, { useState } from 'react';
 import { useToast } from '../hooks/use-toast';
 
 interface TopNavLayoutProps {
@@ -20,18 +19,15 @@ interface TopNavLayoutProps {
 
 function UniversityEmblem() {
   return (
-    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 shrink-0">
+    <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 md:w-12 md:h-12 shrink-0">
       <circle cx="30" cy="30" r="29" fill="#2D6A4F" stroke="#a3d9a5" strokeWidth="1.5"/>
       <circle cx="30" cy="30" r="24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="0.8"/>
-      {/* Shield */}
       <path d="M30 12 L44 17 L44 32 C44 40 38 45 30 48 C22 45 16 40 16 32 L16 17 Z"
         fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.5)" strokeWidth="1"/>
-      {/* Recycle symbol simplified */}
       <path d="M30 21 L33 26 L30 26 L30 31 L33 31 M33 31 L30 36 L27 31 L30 31"
         fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       <path d="M25 24 L27 21 L30 21" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
       <path d="M27 37 L30 36 L30 39" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-      {/* Stars at bottom */}
       <circle cx="22" cy="46" r="1.5" fill="#f5d76e"/>
       <circle cx="30" cy="49" r="1.5" fill="#f5d76e"/>
       <circle cx="38" cy="46" r="1.5" fill="#f5d76e"/>
@@ -43,6 +39,7 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
   const { user, logout } = useAuth();
   const [location] = useLocation();
   const { toast } = useToast();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = publicMode
     ? [
@@ -60,27 +57,23 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
         { title: 'Reports', path: '/reports' },
       ];
 
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-  };
-
   return (
     <div className="min-h-[100dvh] flex flex-col bg-white">
       {/* Top Navbar */}
-      <header className="bg-[#1B4332] text-white h-[72px] shrink-0 sticky top-0 z-50">
-        <div className="container mx-auto h-full px-6 flex items-center justify-between">
+      <header className="bg-[#1B4332] text-white h-16 md:h-[72px] shrink-0 sticky top-0 z-50">
+        <div className="container mx-auto h-full px-4 md:px-6 flex items-center justify-between">
 
           {/* Logo */}
-          <Link href={publicMode ? '/' : '/home'} className="flex items-center gap-3">
+          <Link href={publicMode ? '/' : '/home'} className="flex items-center gap-2 md:gap-3">
             <UniversityEmblem />
             <div className="flex flex-col leading-tight">
-              <span className="font-bold text-[15px] text-white">Sa'adu Zungur University</span>
-              <span className="text-[11px] text-white/70">Waste Recycling Management System</span>
+              <span className="font-bold text-xs md:text-[15px] text-white">Sa'adu Zungur University</span>
+              <span className="text-[9px] md:text-[11px] text-white/70">Waste Recycling Management System</span>
             </div>
           </Link>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => {
               const isActive = location === link.path;
               return (
@@ -101,19 +94,19 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             {publicMode ? (
               <>
                 <Link
                   href="/login"
-                  className="text-sm font-medium text-white px-4 py-2 border border-white/40 rounded-md transition-colors hover:bg-white/10 flex items-center gap-2"
+                  className="hidden sm:flex text-sm font-medium text-white px-3 md:px-4 py-2 border border-white/40 rounded-md transition-colors hover:bg-white/10 items-center gap-2"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                   Login
                 </Link>
                 <Link
                   href="/register"
-                  className="text-sm font-medium bg-[#2D6A4F] text-white px-4 py-2 rounded-md hover:bg-[#22503a] transition-colors flex items-center gap-2"
+                  className="hidden sm:flex text-sm font-medium bg-[#2D6A4F] text-white px-3 md:px-4 py-2 rounded-md hover:bg-[#22503a] transition-colors items-center gap-2"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
                   Register
@@ -121,13 +114,11 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
               </>
             ) : (
               <>
-                {/* Bell with badge */}
                 <button onClick={() => toast({ title: 'Notifications', description: 'You have 4 unread notifications.' })} className="relative p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                   <Bell className="h-5 w-5" />
                   <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">4</span>
                 </button>
 
-                {/* Avatar + name */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center gap-2 hover:bg-white/10 px-2 py-1.5 rounded-lg transition-colors outline-none">
@@ -169,9 +160,53 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
                 </DropdownMenu>
               </>
             )}
+
+            {/* Mobile hamburger */}
+            <button
+              className="lg:hidden p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-md transition-colors"
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {mobileOpen && (
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setMobileOpen(false)} />
+      )}
+
+      {/* Mobile Menu Drawer */}
+      <div className={`fixed top-16 left-0 right-0 z-50 bg-[#1B4332] border-t border-white/10 lg:hidden transition-all duration-300 ${mobileOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`}>
+        <nav className="container mx-auto px-4 py-4 flex flex-col">
+          {navLinks.map((link) => {
+            const isActive = location === link.path;
+            return (
+              <Link
+                key={link.title}
+                href={link.path}
+                onClick={() => setMobileOpen(false)}
+                className={`py-3 px-3 rounded-md text-sm font-medium transition-colors ${
+                  isActive ? 'bg-[#2D6A4F] text-white' : 'text-white/80 hover:bg-white/5 hover:text-white'
+                }`}
+              >
+                {link.title}
+              </Link>
+            );
+          })}
+          {publicMode && (
+            <div className="flex gap-3 mt-3 pt-3 border-t border-white/10 sm:hidden">
+              <Link href="/login" onClick={() => setMobileOpen(false)} className="flex-1 text-center text-sm font-medium text-white px-4 py-2.5 border border-white/40 rounded-md hover:bg-white/10">
+                Login
+              </Link>
+              <Link href="/register" onClick={() => setMobileOpen(false)} className="flex-1 text-center text-sm font-medium bg-[#2D6A4F] text-white px-4 py-2.5 rounded-md hover:bg-[#22503a]">
+                Register
+              </Link>
+            </div>
+          )}
+        </nav>
+      </div>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col">

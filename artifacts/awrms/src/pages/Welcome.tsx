@@ -52,29 +52,29 @@ export default function Welcome() {
   return (
     <TopNavLayout publicMode={true}>
       {/* Hero Section */}
-      <section className="flex-1 flex items-center py-24 md:py-32 bg-white">
-        <div className="container mx-auto px-8 flex flex-col md:flex-row items-center gap-16">
-          <div className="flex-1 space-y-6">
-            <p className="text-slate-700 font-medium text-lg">Welcome to</p>
-            <h1 className="text-5xl md:text-6xl font-extrabold text-[#1B4332] leading-tight">
+      <section className="flex-1 flex items-center py-16 md:py-24 lg:py-32 bg-white">
+        <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center gap-10 md:gap-16">
+          <div className="flex-1 space-y-4 md:space-y-6">
+            <p className="text-slate-700 font-medium text-base md:text-lg">Welcome to</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1B4332] leading-tight">
               Automated Waste<br/>Recycling Management<br/>System
             </h1>
-            <div className="w-24 h-1.5 bg-[#1B4332] rounded-full"></div>
-            <p className="text-slate-600 text-lg leading-relaxed max-w-lg">
+            <div className="w-16 md:w-24 h-1 md:h-1.5 bg-[#1B4332] rounded-full"></div>
+            <p className="text-slate-600 text-base md:text-lg leading-relaxed max-w-lg">
               A smart and efficient solution for managing waste collection,
               recycling activities and promoting a cleaner, greener
               Sa'adu Zungur University.
             </p>
-            <div className="flex flex-wrap gap-4 pt-3">
+            <div className="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-3">
               <Link
                 href="/login"
-                className="px-8 py-3.5 bg-[#1B4332] text-white font-semibold rounded-md hover:bg-[#153427] transition-colors text-lg"
+                className="px-6 md:px-8 py-3 bg-[#1B4332] text-white font-semibold rounded-md hover:bg-[#153427] transition-colors text-base md:text-lg"
               >
                 Get Started
               </Link>
               <button
                 onClick={() => toast({ title: 'Coming Soon', description: 'Full feature details will be available soon.' })}
-                className="px-8 py-3.5 bg-white text-[#1B4332] font-semibold rounded-md border border-[#1B4332] hover:bg-[#F0FFF4] transition-colors text-lg"
+                className="px-6 md:px-8 py-3 bg-white text-[#1B4332] font-semibold rounded-md border border-[#1B4332] hover:bg-[#F0FFF4] transition-colors text-base md:text-lg"
               >
                 Learn More
               </button>
@@ -88,19 +88,19 @@ export default function Welcome() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-24 bg-white border-t border-slate-100">
-        <div className="container mx-auto px-8">
-          <h2 className="text-3xl font-bold text-slate-800 text-center mb-12">Why Choose Us?</h2>
+      <section className="py-16 md:py-24 bg-white border-t border-slate-100">
+        <div className="container mx-auto px-4 md:px-8">
+          <h2 className="text-xl md:text-3xl font-bold text-slate-800 text-center mb-8 md:mb-12">Why Choose Us?</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {features.map((feature) => (
-              <div key={feature.title} className="bg-white border border-slate-200 rounded-xl p-7 flex items-start gap-5 shadow-sm hover:shadow-md transition-shadow">
+              <div key={feature.title} className="bg-white border border-slate-200 rounded-xl p-5 md:p-7 flex items-start gap-4 md:gap-5 shadow-sm hover:shadow-md transition-shadow">
                 <div className="shrink-0 mt-0.5">
                   {feature.icon}
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-800 mb-2 text-base">{feature.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">{feature.description}</p>
+                  <h3 className="font-bold text-slate-800 mb-1 md:mb-2 text-sm md:text-base">{feature.title}</h3>
+                  <p className="text-slate-500 text-xs md:text-sm leading-relaxed">{feature.description}</p>
                 </div>
               </div>
             ))}

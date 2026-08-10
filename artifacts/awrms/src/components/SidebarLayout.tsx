@@ -140,26 +140,26 @@ export function SidebarLayout({ children, pageTitle, pageIcon: PageIcon }: Sideb
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header bar */}
-        <header className="h-[60px] bg-white border-b flex items-center justify-between px-5 shrink-0 shadow-sm z-30">
-          <div className="flex items-center gap-3">
+        <header className="h-14 md:h-[60px] bg-white border-b flex items-center justify-between px-3 md:px-5 shrink-0 shadow-sm z-30">
+          <div className="flex items-center gap-2 md:gap-3 min-w-0">
             <button
-              className="p-1.5 text-slate-500 hover:bg-slate-100 rounded-md"
+              className="p-1.5 text-slate-500 hover:bg-slate-100 rounded-md shrink-0"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="h-5 w-5" />
             </button>
-            {PageIcon && <PageIcon className="h-5 w-5 text-[#1B4332]" />}
-            <h2 className="text-base font-bold text-[#1B4332]">{pageTitle}</h2>
+            {PageIcon && <PageIcon className="h-5 w-5 text-[#1B4332] shrink-0" />}
+            <h2 className="text-sm md:text-base font-bold text-[#1B4332] truncate">{pageTitle}</h2>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 md:gap-3 shrink-0">
             {/* Bell */}
-            <button onClick={() => toast({ title: 'Notifications', description: 'You have 5 unread notifications.' })} className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+            <button onClick={() => toast({ title: 'Notifications', description: 'You have 5 unread notifications.' })} className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors hidden sm:block">
               <Bell className="h-5 w-5" />
               <span className="absolute top-1 right-1 w-4 h-4 bg-[#1B4332] text-white text-[9px] font-bold rounded-full flex items-center justify-center">5</span>
             </button>
             {/* Settings */}
-            <button onClick={() => toast({ title: 'Settings', description: 'Settings page coming soon.' })} className="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+            <button onClick={() => toast({ title: 'Settings', description: 'Settings page coming soon.' })} className="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors hidden sm:block">
               <Settings className="h-5 w-5" />
             </button>
             {/* Avatar + Name */}
@@ -182,7 +182,7 @@ export function SidebarLayout({ children, pageTitle, pageIcon: PageIcon }: Sideb
 
         {/* Scrollable Page Content */}
         <main className="flex-1 overflow-y-auto">
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             {children}
           </div>
           {/* Footer */}
