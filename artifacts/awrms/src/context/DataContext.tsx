@@ -69,10 +69,11 @@ const USERS_KEY = 'awrms_site_users';
 
 const defaultUsers: SiteUser[] = [
   { id: 1, full_name: 'Muhammad Musab', username: 'muhammadmusab372', email: 'muhammadmusab372@gmail.com', role: 'admin', status: 'active', joined: '2026-01-15' },
-  { id: 2, full_name: 'Aisha Bello', username: 'aisha', email: 'aisha@szu.edu.ng', role: 'student', status: 'active', joined: '2026-02-10' },
-  { id: 3, full_name: 'Ibrahim Suleiman', username: 'ibrahim', email: 'ibrahim@szu.edu.ng', role: 'personnel', status: 'active', joined: '2026-01-20' },
-  { id: 4, full_name: 'Fatima Abubakar', username: 'fatima', email: 'fatima@szu.edu.ng', role: 'staff', status: 'active', joined: '2026-03-05' },
-  { id: 5, full_name: 'Yusuf Abdullahi', username: 'yusuf', email: 'yusuf@szu.edu.ng', role: 'student', status: 'inactive', joined: '2026-04-01' },
+  { id: 2, full_name: 'Ahmad Abdul Karim', username: 'ahmadabdulkarim781', email: 'ahmadabdulkarim781@gmail.com', role: 'admin', status: 'active', joined: '2026-01-15' },
+  { id: 3, full_name: 'Aisha Bello', username: 'aisha', email: 'aisha@szu.edu.ng', role: 'student', status: 'active', joined: '2026-02-10' },
+  { id: 4, full_name: 'Ibrahim Suleiman', username: 'ibrahim', email: 'ibrahim@szu.edu.ng', role: 'personnel', status: 'active', joined: '2026-01-20' },
+  { id: 5, full_name: 'Fatima Abubakar', username: 'fatima', email: 'fatima@szu.edu.ng', role: 'staff', status: 'active', joined: '2026-03-05' },
+  { id: 6, full_name: 'Yusuf Abdullahi', username: 'yusuf', email: 'yusuf@szu.edu.ng', role: 'student', status: 'inactive', joined: '2026-04-01' },
 ];
 
 function load<T>(key: string, fallback: T): T {

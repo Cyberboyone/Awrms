@@ -42,13 +42,22 @@ export default function Login() {
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    // Only muhammadmusab372@gmail.com is admin
+    // Only muhammadmusab372@gmail.com and ahmadabdulkarim781@gmail.com are admin
     if (values.username.toLowerCase() === 'muhammadmusab372' || values.username.toLowerCase() === 'muhammadmusab372@gmail.com') {
       login({
         user: { id: Date.now(), full_name: 'Muhammad Musab', username: 'muhammadmusab372', email: 'muhammadmusab372@gmail.com', role: 'admin' },
         token: 'local-session',
       });
       toast({ title: 'Login successful', description: 'Welcome back, Muhammad Musab.' });
+      setLocation('/admin');
+      return;
+    }
+    if (values.username.toLowerCase() === 'ahmadabdulkarim781' || values.username.toLowerCase() === 'ahmadabdulkarim781@gmail.com') {
+      login({
+        user: { id: Date.now(), full_name: 'Ahmad Abdul Karim', username: 'ahmadabdulkarim781', email: 'ahmadabdulkarim781@gmail.com', role: 'admin' },
+        token: 'local-session',
+      });
+      toast({ title: 'Login successful', description: 'Welcome back, Ahmad Abdul Karim.' });
       setLocation('/admin');
       return;
     }
