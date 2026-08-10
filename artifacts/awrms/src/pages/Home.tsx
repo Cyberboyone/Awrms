@@ -1,5 +1,6 @@
 import { Link } from 'wouter';
-import { TopNavLayout } from '../components/TopNavLayout';
+import { SidebarLayout } from '../components/SidebarLayout';
+import { Home as HomeIcon } from 'lucide-react';
 import { Truck, Recycle, BarChart, Bell, Users } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 
@@ -95,8 +96,8 @@ export default function Home() {
   ];
 
   return (
-    <TopNavLayout publicMode={false}>
-      <div className="container mx-auto px-6 py-12 space-y-12 flex-1">
+    <SidebarLayout pageTitle="Home" pageIcon={HomeIcon}>
+      <div className="space-y-10">
 
         {/* Hero Banner */}
         <div className="bg-[#F0FFF4] rounded-2xl overflow-hidden border border-[#C6E5D0]">
@@ -162,7 +163,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </TopNavLayout>
+    </SidebarLayout>
   );
 }
 

@@ -114,9 +114,11 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
               </>
             ) : (
               <>
-                <button onClick={() => toast({ title: 'Notifications', description: 'You have 4 unread notifications.' })} className="relative p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">4</span>
+                <button onClick={() => {}} className="relative p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+                  <Link href="/notifications">
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">4</span>
+                  </Link>
                 </button>
 
                 <DropdownMenu>
@@ -145,7 +147,7 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/admin" className="flex w-full cursor-pointer items-center">
+                      <Link href="/home" className="flex w-full cursor-pointer items-center">
                         Dashboard
                       </Link>
                     </DropdownMenuItem>

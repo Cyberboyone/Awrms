@@ -27,7 +27,7 @@ const roleNames: Record<string, string> = {
 };
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, findUser } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -42,7 +42,7 @@ export default function Login() {
   });
 
   function onSubmit(values: z.infer<typeof loginSchema>) {
-    // Check if admin shortcut
+    // Admin shortcut
     if (values.username.toLowerCase().includes('admin')) {
       login({
         user: { id: Date.now(), full_name: 'AWRMS Administrator', username: values.username, email: `${values.username}@awrms.local`, role: 'admin' },
@@ -53,9 +53,8 @@ export default function Login() {
       return;
     }
 
-    // Look up registered user by username
-    const users = JSON.parse(localStorage.getItem('awrms_users') || '[]');
-    const found = users.find((u: any) => u.username.toLowerCase() === values.username.toLowerCase());
+    // Look up registered user
+    const found = findUser(values.username);
 
     if (!found) {
       toast({ title: 'User not found', description: 'Please register first or check your username.' });

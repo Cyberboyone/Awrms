@@ -25,7 +25,7 @@ const registerSchema = z.object({
 type FormValues = z.infer<typeof registerSchema>;
 
 export default function Register() {
-  const { login } = useAuth();
+  const { registerUser } = useAuth();
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
@@ -48,21 +48,17 @@ export default function Register() {
   function onSubmit(values: FormValues) {
     const { confirmPassword, terms, ...apiData } = values;
     
-    // Store user in localStorage for login lookup
-    const users = JSON.parse(localStorage.getItem('awrms_users') || '[]');
-    const exists = users.find((u: any) => u.username.toLowerCase() === apiData.username.toLowerCase());
-    if (exists) {
-      toast({ title: 'Username taken', description: 'This username is already registered. Please login instead.' });
-      return;
-    }
-    users.push({
-      id: Date.now(),
+    const success = registerUser({
       full_name: apiData.full_name,
       username: apiData.username,
       email: apiData.email,
       role: apiData.role,
     });
-    localStorage.setItem('awrms_users', JSON.stringify(users));
+
+    if (!success) {
+      toast({ title: 'Username taken', description: 'This username is already registered. Please login instead.' });
+      return;
+    }
 
     toast({ title: 'Registration successful', description: 'Your account has been created. Please login.' });
     setLocation('/login');
