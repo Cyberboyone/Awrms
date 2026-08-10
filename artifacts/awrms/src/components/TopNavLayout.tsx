@@ -11,6 +11,7 @@ import {
 } from './ui/dropdown-menu';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import React from 'react';
+import { useToast } from '../hooks/use-toast';
 
 interface TopNavLayoutProps {
   children: React.ReactNode;
@@ -41,6 +42,7 @@ function UniversityEmblem() {
 export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps) {
   const { user, logout } = useAuth();
   const [location] = useLocation();
+  const { toast } = useToast();
 
   const navLinks = publicMode
     ? [
@@ -120,7 +122,7 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
             ) : (
               <>
                 {/* Bell with badge */}
-                <button className="relative p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+                <button onClick={() => toast({ title: 'Notifications', description: 'You have 4 unread notifications.' })} className="relative p-2 text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-colors">
                   <Bell className="h-5 w-5" />
                   <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">4</span>
                 </button>

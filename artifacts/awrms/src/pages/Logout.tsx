@@ -2,10 +2,11 @@ import { SidebarLayout } from '../components/SidebarLayout';
 import { useAuth } from '../context/AuthContext';
 import { LogOut } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 
 export default function Logout() {
   const { logout } = useAuth();
+  const [, setLocation] = useLocation();
   const [loggedOut, setLoggedOut] = useState(false);
 
   const handleLogout = () => {
@@ -13,6 +14,10 @@ export default function Logout() {
     setTimeout(() => {
       logout();
     }, 2000);
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -52,12 +57,12 @@ export default function Logout() {
               </svg>
               {loggedOut ? 'Logging out...' : 'Yes, Logout'}
             </button>
-            <Link
-              href="/admin"
+            <button
+              onClick={handleCancel}
               className="w-full flex items-center justify-center py-3 rounded-md border border-slate-200 text-[#1B4332] font-semibold hover:bg-slate-50 transition-colors"
             >
               Cancel
-            </Link>
+            </button>
           </div>
         </div>
 

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import React, { useState } from 'react';
+import { useToast } from '../hooks/use-toast';
 
 interface SidebarLayoutProps {
   children: React.ReactNode;
@@ -49,6 +50,7 @@ export function SidebarLayout({ children, pageTitle, pageIcon: PageIcon }: Sideb
   const { user, logout } = useAuth();
   const [location] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { toast } = useToast();
 
   const navItems = [
     { title: 'Dashboard', icon: LayoutDashboard, path: '/admin' },
@@ -152,12 +154,12 @@ export function SidebarLayout({ children, pageTitle, pageIcon: PageIcon }: Sideb
 
           <div className="flex items-center gap-3">
             {/* Bell */}
-            <button className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+            <button onClick={() => toast({ title: 'Notifications', description: 'You have 5 unread notifications.' })} className="relative p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
               <Bell className="h-5 w-5" />
               <span className="absolute top-1 right-1 w-4 h-4 bg-[#1B4332] text-white text-[9px] font-bold rounded-full flex items-center justify-center">5</span>
             </button>
             {/* Settings */}
-            <button className="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
+            <button onClick={() => toast({ title: 'Settings', description: 'Settings page coming soon.' })} className="p-2 text-slate-500 hover:bg-slate-100 rounded-full transition-colors">
               <Settings className="h-5 w-5" />
             </button>
             {/* Avatar + Name */}

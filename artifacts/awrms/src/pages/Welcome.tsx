@@ -1,7 +1,9 @@
 import { Link } from 'wouter';
 import { TopNavLayout } from '../components/TopNavLayout';
+import { useToast } from '../hooks/use-toast';
 
 export default function Welcome() {
+  const { toast } = useToast();
   const features = [
     {
       title: 'Efficient Waste Management',
@@ -50,7 +52,7 @@ export default function Welcome() {
   return (
     <TopNavLayout publicMode={true}>
       {/* Hero Section */}
-      <section className="py-16 md:py-20 bg-white">
+      <section className="py-20 md:py-28 bg-white">
         <div className="container mx-auto px-8 flex flex-col md:flex-row items-center gap-12">
           <div className="flex-1 space-y-5">
             <p className="text-slate-700 font-medium text-base">Welcome to</p>
@@ -70,12 +72,12 @@ export default function Welcome() {
               >
                 Get Started
               </Link>
-              <Link
-                href="/about"
+              <button
+                onClick={() => toast({ title: 'Coming Soon', description: 'Full feature details will be available soon.' })}
                 className="px-6 py-3 bg-white text-[#1B4332] font-semibold rounded-md border border-[#1B4332] hover:bg-[#F0FFF4] transition-colors"
               >
                 Learn More
-              </Link>
+              </button>
             </div>
           </div>
 
@@ -87,7 +89,7 @@ export default function Welcome() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-16 bg-white border-t border-slate-100">
+      <section className="py-20 bg-white border-t border-slate-100">
         <div className="container mx-auto px-8">
           <h2 className="text-2xl font-bold text-slate-800 text-center mb-10">Why Choose Us?</h2>
 

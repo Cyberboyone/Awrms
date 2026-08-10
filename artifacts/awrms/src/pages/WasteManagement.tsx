@@ -1,8 +1,10 @@
 import { SidebarLayout } from '../components/SidebarLayout';
 import { Trash2 } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
+import { useToast } from '../hooks/use-toast';
 
 export default function WasteManagement() {
+  const { toast } = useToast();
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -156,11 +158,11 @@ export default function WasteManagement() {
                 <p className="text-xs text-slate-500 mt-0.5">Manage waste types, track quantities and monitor disposal and recycling activities.</p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <button className="flex items-center gap-2 px-4 py-2 bg-[#1B4332] text-white text-sm font-semibold rounded-md hover:bg-[#153427] transition-colors">
+                <button onClick={() => toast({ title: 'Add Waste', description: 'Add waste form coming soon.' })} className="flex items-center gap-2 px-4 py-2 bg-[#1B4332] text-white text-sm font-semibold rounded-md hover:bg-[#153427] transition-colors">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="h-4 w-4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   Add Waste
                 </button>
-                <button className="flex items-center gap-2 px-4 py-2 border border-slate-200 text-slate-600 text-sm font-medium rounded-md hover:bg-slate-50 transition-colors">
+                <button onClick={() => toast({ title: 'Export', description: 'Exporting waste data to CSV...' })} className="flex items-center gap-2 px-4 py-2 border border-slate-200 text-slate-600 text-sm font-medium rounded-md hover:bg-slate-50 transition-colors">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                   Export
                 </button>
@@ -256,13 +258,13 @@ export default function WasteManagement() {
                     </td>
                     <td className="px-5 py-3.5">
                       <div className="flex items-center justify-center gap-1.5">
-                        <button className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#1B4332] hover:border-[#1B4332] transition-colors">
+                        <button onClick={() => toast({ title: 'View Details', description: `Viewing details for ${row.code}` })} className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-[#1B4332] hover:border-[#1B4332] transition-colors">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         </button>
-                        <button className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-400 transition-colors">
+                        <button onClick={() => toast({ title: 'Edit', description: `Editing ${row.code}` })} className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-blue-600 hover:border-blue-400 transition-colors">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                         </button>
-                        <button className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-red-600 hover:border-red-400 transition-colors">
+                        <button onClick={() => toast({ title: 'Delete', description: `Deleted ${row.code}` })} className="w-7 h-7 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:text-red-600 hover:border-red-400 transition-colors">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                         </button>
                       </div>

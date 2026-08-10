@@ -7,8 +7,10 @@ import {
   RadialBarChart, RadialBar,
 } from 'recharts';
 import { Link } from 'wouter';
+import { useToast } from '../hooks/use-toast';
 
 export default function Reports() {
+  const { toast } = useToast();
   const stats = [
     {
       title: 'Total Waste Collected',
@@ -142,7 +144,7 @@ export default function Reports() {
                 <polyline points="6 9 12 15 18 9"/>
               </svg>
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 bg-[#1B4332] text-white text-sm font-semibold rounded-md hover:bg-[#153427] transition-colors">
+            <button onClick={() => toast({ title: 'Export Report', description: 'Generating PDF report...' })} className="flex items-center gap-2 px-4 py-2 bg-[#1B4332] text-white text-sm font-semibold rounded-md hover:bg-[#153427] transition-colors">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                 <polyline points="7 10 12 15 17 10"/>
@@ -352,7 +354,7 @@ export default function Reports() {
               </table>
             </div>
             <div className="mt-4 text-center">
-              <button className="text-xs text-[#1B4332] font-semibold hover:underline">View Full Report</button>
+              <button onClick={() => toast({ title: 'Full Report', description: 'Loading detailed report...' })} className="text-xs text-[#1B4332] font-semibold hover:underline">View Full Report</button>
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
 import { Link } from 'wouter';
 import { TopNavLayout } from '../components/TopNavLayout';
 import { Truck, Recycle, BarChart, Bell, Users } from 'lucide-react';
+import { useToast } from '../hooks/use-toast';
 
 export default function Home() {
+  const { toast } = useToast();
   const statCards = [
     {
       title: 'Registered Users',
@@ -94,7 +96,7 @@ export default function Home() {
 
   return (
     <TopNavLayout publicMode={false}>
-      <div className="container mx-auto px-6 py-8 space-y-10">
+      <div className="container mx-auto px-6 py-10 space-y-10">
 
         {/* Hero Banner */}
         <div className="bg-[#F0FFF4] rounded-2xl overflow-hidden border border-[#C6E5D0]">
@@ -109,7 +111,7 @@ export default function Home() {
               <p className="text-slate-600 text-sm leading-relaxed max-w-md">
                 A smart solution for efficiently managing waste collection and recycling activities within Sa'adu Zungur University.
               </p>
-              <button className="inline-flex items-center gap-2 px-5 py-3 bg-[#1B4332] text-white font-semibold rounded-md hover:bg-[#153427] transition-colors text-sm">
+              <button onClick={() => toast({ title: 'Collection Request', description: 'Collection request form coming soon.' })} className="inline-flex items-center gap-2 px-5 py-3 bg-[#1B4332] text-white font-semibold rounded-md hover:bg-[#153427] transition-colors text-sm">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-4 w-4">
                   <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/>
                   <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/>
@@ -136,7 +138,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-extrabold text-slate-800">{stat.value}</h3>
               <p className="text-sm text-slate-500 font-medium mt-0.5">{stat.title}</p>
-              <Link href="#" className="text-xs text-[#1B4332] hover:underline font-semibold mt-2 inline-block">
+              <Link href="/waste" className="text-xs text-[#1B4332] hover:underline font-semibold mt-2 inline-block">
                 View all
               </Link>
             </div>

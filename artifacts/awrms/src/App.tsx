@@ -15,6 +15,14 @@ import WasteManagement from './pages/WasteManagement';
 import Reports from './pages/Reports';
 import Logout from './pages/Logout';
 import NotFound from './pages/not-found';
+import About from './pages/About';
+import Services from './pages/Services';
+import HowItWorks from './pages/HowItWorks';
+import Contact from './pages/Contact';
+import ForgotPassword from './pages/ForgotPassword';
+import Users from './pages/Users';
+import Notifications from './pages/Notifications';
+import Settings from './pages/Settings';
 
 const queryClient = new QueryClient();
 
@@ -42,7 +50,12 @@ function Router() {
       <Route path="/" component={Welcome} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
-      
+      <Route path="/about" component={About} />
+      <Route path="/services" component={Services} />
+      <Route path="/how-it-works" component={HowItWorks} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/forgot-password" component={ForgotPassword} />
+
       {/* Protected Routes */}
       <Route path="/home">
         {() => <PrivateRoute component={Home} />}
@@ -53,7 +66,6 @@ function Router() {
       <Route path="/waste">
         {() => <PrivateRoute component={WasteManagement} allowedRoles={['admin', 'personnel']} />}
       </Route>
-      {/* Fallback to WasteManagement for requested and recycling routes to satisfy completeness since they use similar tables */}
       <Route path="/requests">
         {() => <PrivateRoute component={WasteManagement} allowedRoles={['admin', 'personnel']} />}
       </Route>
@@ -62,6 +74,15 @@ function Router() {
       </Route>
       <Route path="/reports">
         {() => <PrivateRoute component={Reports} allowedRoles={['admin']} />}
+      </Route>
+      <Route path="/users">
+        {() => <PrivateRoute component={Users} allowedRoles={['admin']} />}
+      </Route>
+      <Route path="/notifications">
+        {() => <PrivateRoute component={Notifications} />}
+      </Route>
+      <Route path="/settings">
+        {() => <PrivateRoute component={Settings} />}
       </Route>
       <Route path="/logout">
         {() => <PrivateRoute component={Logout} />}

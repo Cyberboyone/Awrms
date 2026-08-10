@@ -6,8 +6,10 @@ import {
 } from 'recharts';
 import { format } from 'date-fns';
 import { Link } from 'wouter';
+import { useToast } from '../hooks/use-toast';
 
 export default function AdminDashboard() {
+  const { toast } = useToast();
   const areaData = [
     { name: 'May 1', value: 22 },
     { name: 'May 6', value: 35 },
@@ -228,7 +230,7 @@ export default function AdminDashboard() {
                 </div>
               ))}
             </div>
-            <button className="mt-4 w-full border border-slate-200 text-slate-600 text-xs py-2 rounded-md hover:bg-slate-50 flex items-center justify-center gap-2">
+            <button onClick={() => toast({ title: 'Full Report', description: 'Opening full analytics report...' })} className="mt-4 w-full border border-slate-200 text-slate-600 text-xs py-2 rounded-md hover:bg-slate-50 flex items-center justify-center gap-2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-3.5 w-3.5">
                 <line x1="12" x2="12" y1="20" y2="10"/><line x1="18" x2="18" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="16"/>
               </svg>
@@ -295,15 +297,15 @@ export default function AdminDashboard() {
             <h3 className="font-bold text-slate-800 mb-4">Quick Actions</h3>
             <div className="grid grid-cols-4 gap-3">
               {[
-                { label: 'Add New User', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg> },
-                { label: 'Add Waste Type', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/></svg> },
-                { label: 'Schedule Collection', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> },
-                { label: 'Generate Report', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg> },
+                { label: 'Add New User', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>, href: '/users' },
+                { label: 'Add Waste Type', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5"/><path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12"/><path d="m14 16-3 3 3 3"/></svg>, href: '/waste' },
+                { label: 'Schedule Collection', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>, href: '/requests' },
+                { label: 'Generate Report', icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-6 w-6"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/></svg>, href: '/reports' },
               ].map((action) => (
-                <button key={action.label} className="flex flex-col items-center gap-2 p-4 rounded-xl border border-slate-200 hover:border-[#2D6A4F] hover:bg-[#F0FFF4] hover:text-[#1B4332] text-slate-600 transition-colors">
+                <Link key={action.label} href={action.href} className="flex flex-col items-center gap-2 p-4 rounded-xl border border-slate-200 hover:border-[#2D6A4F] hover:bg-[#F0FFF4] hover:text-[#1B4332] text-slate-600 transition-colors">
                   {action.icon}
                   <span className="text-[11px] font-medium text-center leading-tight">{action.label}</span>
-                </button>
+                </Link>
               ))}
             </div>
           </div>
