@@ -4,7 +4,7 @@ import { Link } from 'wouter';
 export default function About() {
   return (
     <TopNavLayout publicMode={true}>
-      <section className="py-16 bg-white">
+      <section className="flex-1 py-24 bg-white">
         <div className="container mx-auto px-8 max-w-4xl">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-extrabold text-[#1B4332] mb-4">About AWRMS</h1>

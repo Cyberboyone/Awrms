@@ -175,7 +175,9 @@ export function TopNavLayout({ children, publicMode = true }: TopNavLayoutProps)
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
-        {children}
+        <div className="flex-1 flex flex-col">
+          {children}
+        </div>
       </main>
 
       {/* Footer */}

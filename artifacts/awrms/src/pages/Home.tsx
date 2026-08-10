@@ -96,7 +96,7 @@ export default function Home() {
 
   return (
     <TopNavLayout publicMode={false}>
-      <div className="container mx-auto px-6 py-10 space-y-10">
+      <div className="container mx-auto px-6 py-12 space-y-12 flex-1">
 
         {/* Hero Banner */}
         <div className="bg-[#F0FFF4] rounded-2xl overflow-hidden border border-[#C6E5D0]">
